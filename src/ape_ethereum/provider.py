@@ -1468,21 +1468,21 @@ class EthereumNodeProvider(Web3Provider, ABC):
         # NOTE: We have to check both earliest and latest
         #   because if the chain was _ever_ PoA, we need
         #   this middleware.
-        for option in ("earliest", "latest"):
-            try:
-                block = self.web3.eth.get_block(option)  # type: ignore[arg-type]
-            except ExtraDataLengthError:
-                is_likely_poa = True
-                break
-            else:
-                is_likely_poa = (
-                    "proofOfAuthorityData" in block
-                    or len(block.get("extraData", "")) > MAX_EXTRADATA_LENGTH
-                )
-                if is_likely_poa:
-                    break
+        # for option in ("earliest", "latest"):
+        #     try:
+        #         block = self.web3.eth.get_block(option)  # type: ignore[arg-type]
+        #     except ExtraDataLengthError:
+        #         is_likely_poa = True
+        #         break
+        #     else:
+        #         is_likely_poa = (
+        #             "proofOfAuthorityData" in block
+        #             or len(block.get("extraData", "")) > MAX_EXTRADATA_LENGTH
+        #         )
+        #         if is_likely_poa:
+        #             break
 
-        if is_likely_poa and geth_poa_middleware not in self.web3.middleware_onion:
+        if True and geth_poa_middleware not in self.web3.middleware_onion:
             self.web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
         self.network.verify_chain_id(chain_id)
